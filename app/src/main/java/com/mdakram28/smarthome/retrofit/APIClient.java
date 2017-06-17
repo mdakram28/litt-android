@@ -7,6 +7,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.mdakram28.smarthome.util.Preferences.httpServer;
+
 /**
  * Created by mdakram28 on 6/6/17.
  */
@@ -19,7 +21,7 @@ public class APIClient {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).addNetworkInterceptor(new StethoInterceptor()).build();
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:8000")
+                .baseUrl(httpServer)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

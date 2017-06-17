@@ -1,12 +1,16 @@
 package com.mdakram28.smarthome.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.mdakram28.smarthome.R;
+import com.mdakram28.smarthome.activities.fragments.SettingsActivity;
 import com.mdakram28.smarthome.util.Preferences;
 import com.mdakram28.smarthome.activities.fragments.HomeFragment;
 import com.mdakram28.smarthome.activities.fragments.NotificationsFragment;
@@ -68,6 +72,23 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[0]);
         tabLayout.getTabAt(2).setIcon(tabIcons[0]);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_settings:
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupViewPager(ViewPager viewPager) {
