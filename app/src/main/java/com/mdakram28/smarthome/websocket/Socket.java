@@ -12,6 +12,7 @@ import com.mdakram28.smarthome.websocket.models.Control;
 import com.mdakram28.smarthome.websocket.models.SocketRequest;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
 
@@ -83,6 +84,12 @@ public class Socket extends WebSocketAdapter {
         for(SocketConnectedListener listener : connectedListeners){
             listener.onConnect();
         }
+    }
+
+    @Override
+    public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
+        System.out.println("Unable to connect");
+        super.onConnectError(websocket, exception);
     }
 
     @Override

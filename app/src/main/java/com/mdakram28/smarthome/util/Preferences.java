@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 public class Preferences {
 
-    public static final String websocketServer = "ws://192.168.0.103:8000/";
+    public static final String websocketServer = "ws://192.168.0.102:8000/";
     public static void setAccessToken(@NonNull Context context, String token) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
