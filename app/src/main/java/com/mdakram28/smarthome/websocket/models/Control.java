@@ -17,4 +17,7 @@ public class Control {
 
     @SerializedName("roomid")
     public String roomId;
+
+    @SerializedName("state")
+    public String state;
 }

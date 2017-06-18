@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.mdakram28.smarthome.listeners.ControlStateListener;
+import com.mdakram28.smarthome.listeners.SocketInitListener;
 import com.mdakram28.smarthome.util.Preferences;
 import com.mdakram28.smarthome.listeners.SocketConnectedListener;
 import com.mdakram28.smarthome.listeners.SocketDataListener;
@@ -33,10 +34,17 @@ public class Socket extends WebSocketAdapter {
     WebSocket ws;
     WebSocketFactory wsFactory;
     Gson gson;
+    private static boolean isProcessing = false;
 
     public HashMap<String,List<SocketDataListener>> listeners = new HashMap<String,List<SocketDataListener>>();
     public ArrayList<SocketConnectedListener> connectedListeners = new ArrayList<SocketConnectedListener>();
     public HashMap<String, ControlStateListener> stateListeners = new HashMap<>();
+
+    public static void setInitListener(SocketInitListener initListener) {
+        Socket.initListener = initListener;
+    }
+
+    public static SocketInitListener initListener;
 
     private Socket() {
         wsFactory = new WebSocketFactory();
@@ -44,6 +52,7 @@ public class Socket extends WebSocketAdapter {
     }
 
     public void init(){
+        isProcessing = true;
         ControlsPersistence.init(this);
         NotificationPersistence.init(this);
         RoomConfigPersistence.init(this);
@@ -108,10 +117,13 @@ public class Socket extends WebSocketAdapter {
             if(stateListeners.containsKey(device)){
                 stateListeners.get(device).controlStateReceived(device,state);
             }
-        }else if(listeners.containsKey(type)){
+        }
+        if(listeners.containsKey(type)){
             for(SocketDataListener listener : listeners.get(type)){
                 listener.onDataReceived(type, jsonObject.get("data"));
             }
+            if(isProcessing)
+                tryInit();
         }
     }
 
@@ -143,5 +155,15 @@ public class Socket extends WebSocketAdapter {
         String json = gson.toJson(req);
         ws.sendText(json);
         System.out.println(json);
+    }
+
+    public static void tryInit(){
+        if(isProcessing && ControlsPersistence.isInit() && NotificationPersistence.isInit()
+                && RoomConfigPersistence.isInit()){
+            if(initListener != null){
+                initListener.onInit();
+            }
+            isProcessing = false;
+        }
     }
 }

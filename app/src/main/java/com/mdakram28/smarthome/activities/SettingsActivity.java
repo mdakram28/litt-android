@@ -1,4 +1,4 @@
-package com.mdakram28.smarthome.activities.fragments;
+package com.mdakram28.smarthome.activities;
 
 
 import android.annotation.TargetApi;
@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.mdakram28.smarthome.R;
+import com.mdakram28.smarthome.activities.fragments.AppCompatPreferenceActivity;
 
 import java.util.List;
 

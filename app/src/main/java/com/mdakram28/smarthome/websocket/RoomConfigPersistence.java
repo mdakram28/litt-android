@@ -42,4 +42,8 @@ public class RoomConfigPersistence {
             }
         });
     }
+
+    public static boolean isInit(){
+        return rooms.size() != 0;
+    }
 }

@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mdakram28.smarthome.R;
-import com.mdakram28.smarthome.activities.fragments.SettingsActivity;
 import com.mdakram28.smarthome.util.Preferences;
 import com.mdakram28.smarthome.activities.fragments.HomeFragment;
 import com.mdakram28.smarthome.activities.fragments.NotificationsFragment;
@@ -30,7 +29,6 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.selector_home,
             R.drawable.selector_home
     };
-    Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,26 +45,6 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
-
-        socket = Socket.getSocket();
-        socket.init();
-        try {
-            socket.connect(Preferences.getAccessToken(this));
-            socket.addConnectedListener(new SocketConnectedListener() {
-                @Override
-                public void onConnect() {
-                    try {
-                        Thread.sleep(1000);
-                        socket.requestDeviceConfig();
-                        socket.requestRoomConfig();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
