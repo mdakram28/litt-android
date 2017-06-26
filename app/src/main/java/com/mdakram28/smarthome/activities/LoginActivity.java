@@ -19,11 +19,15 @@ import retrofit2.Response;
 
 import com.google.gson.JsonElement;
 import com.mdakram28.smarthome.R;
+import com.mdakram28.smarthome.listeners.SocketConnectedListener;
 import com.mdakram28.smarthome.util.Preferences;
 import com.mdakram28.smarthome.retrofit.APIClient;
 import com.mdakram28.smarthome.retrofit.AuthAPI;
+import com.mdakram28.smarthome.websocket.Socket;
 
-public class LoginActivity extends AppCompatActivity {
+import java.io.IOException;
+
+public class LoginActivity extends AppCompatActivity{
 
     @BindView(R.id.input_username)
     EditText _usernameText;
@@ -83,6 +87,19 @@ public class LoginActivity extends AppCompatActivity {
                         token = response.body().getAsJsonObject().get("token").getAsString()    ;
                         Log.d("API", "Token = "+token);
                         Preferences.setAccessToken(getBaseContext(), token);
+                        final Socket socket = Socket.getSocket();
+                        try {
+                            socket.connect(token);
+                            socket.addConnectedListener(new SocketConnectedListener() {
+                                @Override
+                                public void onConnect() {
+                                    socket.requestDeviceConfig();
+                                    socket.requestRoomConfig();
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         onLoginSuccess();
                     } catch (Exception e) {
                         onLoginFailed();

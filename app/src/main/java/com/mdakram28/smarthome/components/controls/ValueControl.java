@@ -38,6 +38,7 @@ public class ValueControl extends RelativeLayout implements ControlStateListener
     public ValueControl(Context context, Control control) {
         super(context);
         this.control = control;
+        this.value = Integer.parseInt(control.state);
         initializeViews(context);
     }
 

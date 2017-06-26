@@ -13,6 +13,8 @@ import com.mdakram28.smarthome.listeners.ControlStateListener;
 import com.mdakram28.smarthome.websocket.Socket;
 import com.mdakram28.smarthome.websocket.models.Control;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +33,7 @@ public class SwitchControl extends RelativeLayout implements CompoundButton.OnCh
     public SwitchControl(Context context, Control control) {
         super(context);
         this.control = control;
+        this.isChecked = Objects.equals(control.state, "1");
         initializeViews(context);
     }
 

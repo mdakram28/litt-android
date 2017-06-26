@@ -31,14 +31,18 @@ public class NotificationPersistence {
                     notifications.clear();
                     Gson gson = new Gson();
                     JSONArray jsonArray = (JSONArray) data;
-
-                    for (final UIChangeListener listener : uiChangeListeners) {
-                        listener.updateUI();
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                for (final UIChangeListener listener : uiChangeListeners) {
+                    listener.updateUI();
+                }
             }
         });
+    }
+
+    public static boolean isInit(){
+        return notifications.size() != 0;
     }
 }
